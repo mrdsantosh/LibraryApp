@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import android.widget.CheckBox;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 public class DBController extends SQLiteOpenHelper {
@@ -39,7 +37,7 @@ public class DBController extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + DATABASE_TABLE + "(SCHOOL_NAME TEXT, STUDENT_NAME TEXT, BOOK_NAME TEXT NOT NULL, BOOK_LEVEL TEXT NOT NULL, ISSUE_DATE DATE NOT NULL, PRIMARY KEY (SCHOOL_NAME, STUDENT_NAME));");
+        db.execSQL("CREATE TABLE " + DATABASE_TABLE + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, SCHOOL_NAME TEXT NOT NULL, STUDENT_NAME TEXT NOT NULL, BOOK_NAME TEXT NOT NULL, BOOK_LEVEL TEXT NOT NULL, ISSUE_DATE DATE NOT NULL);");
         Log.e("DatabaseHelper", DATABASE_TABLE + " created!");
     }
 
@@ -69,7 +67,7 @@ public class DBController extends SQLiteOpenHelper {
         Cursor cursor = this.getReadableDatabase().rawQuery("SELECT * FROM " + DATABASE_TABLE, null);
         textView.setText("");
         while (cursor.moveToNext()) {
-            textView.append(cursor.getString(0) + " " + cursor.getString(1) + " " + cursor.getString(2) + " " + cursor.getString(3) + " " + cursor.getString(4) + "\n");
+            textView.append(cursor.getString(1) + " " + cursor.getString(2) + " " + cursor.getString(3) + " " + cursor.getString(4) + " " + cursor.getString(5) + "\n");
         }
     }
 

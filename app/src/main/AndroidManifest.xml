@@ -19,6 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".StudentActivity"></activity>
+        <uses-permission android:name="android.permission.INTERNET" />
     </application>
 
 </manifest>

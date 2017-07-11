@@ -2,23 +2,31 @@ package com.santosh.library.libraryapp;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class StudentActivity extends AppCompatActivity {
 
     EditText schoolName, studentName, bookName, bookLevel, issueDate;
     DatePickerDialog datePickerDialog;
-    DBController dbController;
+    // [START declare_database_ref]
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+    // [END declare_database_ref]
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,29 +64,46 @@ public class StudentActivity extends AppCompatActivity {
                 datePickerDialog.show();
             }
         });
-
-        dbController = dbController.getInstance(this);
     }
 
     public void btn_click(View view) {
         switch (view.getId()) {
             case R.id.button_add:
-                try {
-                    dbController.insertStudent(schoolName.getText().toString(), studentName.getText().toString(), bookName.getText().toString(), bookLevel.getText().toString(), issueDate.getText().toString());
-                    schoolName.setText("");
-                    studentName.setText("");
-                    bookName.setText("");
-                    bookLevel.setText("");
-                    issueDate.setText(DateFormat.getDateInstance().format(new Date()));
-                    Toast.makeText(StudentActivity.this, "Record Added", Toast.LENGTH_SHORT).show();
-                } catch (SQLiteException e) {
-                    Toast.makeText(StudentActivity.this, "ALREADY EXISTS", Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(userId)) {
+                    userId = mDatabase.push().getKey();
                 }
+                Student student = new Student();
+                student.setSchoolName(schoolName.getText().toString());
+                student.setStudentName(studentName.getText().toString());
+                student.setBookName(bookName.getText().toString());
+                student.setBookLevel(bookLevel.getText().toString());
+                student.setIssueDate(issueDate.getText().toString());
+
+                String key = mDatabase.child("students").push().getKey();
+                mDatabase.child("students").child(key).updateChildren(student.toMap());
+
+                // clear the text
+                schoolName.setText("");
+                studentName.setText("");
+                bookName.setText("");
+                bookLevel.setText("");
+                issueDate.setText(DateFormat.getDateInstance().format(new Date()));
+                Toast.makeText(StudentActivity.this, "RECORD ADDED", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.button_list:
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 break;
         }
+    }
+
+    private void writeNewUser(String schoolName, String studentName, String bookName, String bookLevel, String issueDate) {
+        Student student = new Student();
+        student.setSchoolName(schoolName);
+        student.setStudentName(studentName);
+        student.setBookName(bookName);
+        student.setBookLevel(bookLevel);
+        student.setIssueDate(issueDate);
+        mDatabase.child("students").setValue(student);
     }
 }

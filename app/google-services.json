@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "319036556005",
+    "firebase_url": "https://libraryapp-21fa7.firebaseio.com",
+    "project_id": "libraryapp-21fa7",
+    "storage_bucket": "libraryapp-21fa7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:319036556005:android:753e78eb07578522",
+        "android_client_info": {
+          "package_name": "com.santosh.library.libraryapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "319036556005-cqan14pv53pgbf2tnjn56bacedvl8r2v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgreeRmHGgbl1YimstW0lNS9aKM2lA6Hg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
